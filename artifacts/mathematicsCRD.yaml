@@ -1,0 +1,26 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: maths.mathematics.com
+spec:
+  group: mathematics.com
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        # schema used for validation
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                Number1:
+                  type: integer
+                Number2:
+                  type: integer
+  names:
+    kind: Math
+    plural: maths
+  scope: Namespaced
