@@ -1,4 +1,4 @@
-module github.com/math-controller
+module github.com/Priyakr2205/math-controller
 
 go 1.17
 
