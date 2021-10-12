@@ -237,7 +237,7 @@ func (c *Controller) syncHandler(key string) error {
 		break
 	case "sub", "Sub", "Substraction", "substraction":
 		result = *math.Spec.Number1 - *math.Spec.Number2
-		oper = "Difference "
+		oper = "Difference"
 		fmt.Println("Difference of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
 
 		break
