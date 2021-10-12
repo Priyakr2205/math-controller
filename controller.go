@@ -98,6 +98,11 @@ func NewController(
 	mathInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
 		AddFunc: controller.enqueueMath,
 		UpdateFunc: func(old, new interface{}) {
+			newMath := new.(*mathv1alpha1.Math)
+			oldMath := old.(*mathv1alpha1.Math)
+			if newMath.Spec.Number1 == oldMath.Spec.Number1 && newMath.Spec.Number2 == oldMath.Spec.Number2 && newMath.Spec.Operation == oldMath.Spec.Operation {
+				return
+			}
 			controller.enqueueMath(new)
 		},
 	})
