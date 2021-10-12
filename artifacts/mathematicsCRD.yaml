@@ -20,6 +20,8 @@ spec:
                   type: integer
                 number2:
                   type: integer
+                operation:
+                  type: string
   names:
     kind: Math
     plural: maths
