@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	mathv1alpha1 "math-controller/pkg/apis/mathematics/v1alpha1"
 	clientset "math-controller/pkg/client/clientset/versioned"
@@ -21,6 +22,7 @@ import (
 	//      "context"
 	//	"k8s.io/client-go/kubernetes"
 	//	appslisters "k8s.io/client-go/listers/apps/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
@@ -222,6 +224,23 @@ func (c *Controller) syncHandler(key string) error {
 		return err
 	}
 
+	fmt.Println("Numbers are", *math.Spec.Number1, *math.Spec.Number2)
+
+	switch math.Spec.Operation {
+	case "add", "Add", "Addition", "addition":
+		fmt.Println("Sum of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1+*math.Spec.Number2)
+		break
+	case "sub", "Sub", "Substraction", "substraction":
+		fmt.Println("Difference of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1-*math.Spec.Number2)
+		break
+	case "div", "Div", "Division", "division":
+		fmt.Println("Remainder of ", *math.Spec.Number1, " divided by", *math.Spec.Number2, " is ", *math.Spec.Number1%*math.Spec.Number2)
+		break
+	case "multiply", "Multiply":
+		fmt.Println("Product of ", *math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", *math.Spec.Number1**math.Spec.Number2)
+		break
+	}
+
 	err = c.updateMath(math)
 	if err != nil {
 		return err
@@ -240,28 +259,11 @@ func (c *Controller) updateMath(math *mathv1alpha1.Math) error {
 
 	fmt.Println("service label ", mathcopy.ObjectMeta.Name)
 
-	/*          mathcopy.ObjectMeta.Labels = map[string]string{
+	mathcopy.ObjectMeta.Labels = map[string]string{
 		"Update": "1",
-	 }
-
-	 _,err:= c.mathclientset.MathematicsV1alpha1().Maths("default").Update(context.TODO(),mathcopy,metav1.UpdateOptions{})
-	*/
-	fmt.Println("Numbers are", *math.Spec.Number1, *math.Spec.Number2)
-
-	switch math.Spec.Operation {
-	case "add", "Add", "Addition", "addition":
-		fmt.Println("Sum of ", *&math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1+*math.Spec.Number2)
-		break
-	case "sub", "Sub", "Substraction", "substraction":
-		fmt.Println("Difference of ", *&math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1-*math.Spec.Number2)
-		break
-	case "div", "Div", "Division", "division":
-		fmt.Println("Remainder of ", *&math.Spec.Number1, " divided by", *math.Spec.Number2, " is ", *math.Spec.Number1%*math.Spec.Number2)
-		break
-	case "multiply", "Multiply":
-		fmt.Println("Product of ", *&math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", *math.Spec.Number1**math.Spec.Number2)
-		break
 	}
 
-	return nil
+	_, err := c.mathclientset.MathematicsV1alpha1().Maths("default").Update(context.TODO(), mathcopy, metav1.UpdateOptions{})
+
+	return err
 }
