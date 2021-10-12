@@ -1,0 +1,9 @@
+apiVersion: mathematics.com/v1alpha1
+kind: Math
+metadata:
+  name: example-math2
+spec: 
+  Number1: 2
+  Number2: 1
+
+

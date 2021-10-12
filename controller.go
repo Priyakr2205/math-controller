@@ -7,7 +7,8 @@ import (
 	informers "math-controller/pkg/client/informers/externalversions/mathematics/v1alpha1"
 	listers "math-controller/pkg/client/listers/mathematics/v1alpha1"
 	"time"
-
+	mathv1alpha1 "math-controller/pkg/apis/mathematics/v1alpha1"
+//metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -15,7 +16,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	typedcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/klog/v2"
-
+  //      "context"
 	//	"k8s.io/client-go/kubernetes"
 	//	appslisters "k8s.io/client-go/listers/apps/v1"
 	"k8s.io/client-go/kubernetes/scheme"
@@ -25,6 +26,21 @@ import (
 )
 
 const controllerAgentName = "math-controller"
+
+const (
+	// SuccessSynced is used as part of the Event 'reason' when a Foo is synced
+	SuccessSynced = "Synced"
+	// ErrResourceExists is used as part of the Event 'reason' when a Foo fails
+	// to sync due to a Deployment of the same name already existing.
+	ErrResourceExists = "ErrResourceExists"
+
+	// MessageResourceExists is the message used for Events when a resource
+	// fails to sync due to a Deployment already existing
+	MessageResourceExists = "Resource %q already exists and is not managed by Foo"
+	// MessageResourceSynced is the message used for an Event fired when a Foo
+	// is synced successfully
+	MessageResourceSynced = "Math  synced successfully"
+)
 
 type Controller struct {
 	// kubeclientset is a standard kubernetes clientset
@@ -204,10 +220,31 @@ func (c *Controller) syncHandler(key string) error {
 		return err
 	}
 
-	number1 := math.Spec.Number1
-	number2 := math.Spec.Number2
+	err= c.updateMath(math)
+                if err != nil {
+                return err
+        }
 
-	fmt.Println(number1, number2)
+	//number1 := math.Spec.Number1
+	//number2 := math.Spec.Number2
 
-	return err
+	//fmt.Println("number1:",number1, "nu" number2)
+        c.recorder.Event(math, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
+	return nil
 }
+
+func (c *Controller) updateMath(math *mathv1alpha1.Math) error{
+     mathcopy:= math.DeepCopy()
+
+	 fmt.Println("service label ",mathcopy.ObjectMeta.Name)
+
+/*          mathcopy.ObjectMeta.Labels = map[string]string{
+		"Update": "1",
+	 }
+
+	 _,err:= c.mathclientset.MathematicsV1alpha1().Maths("default").Update(context.TODO(),mathcopy,metav1.UpdateOptions{})
+*/
+         fmt.Println("Numbers are",*math.Spec.Number1,*math.Spec.Number2)
+	return nil
+}
+

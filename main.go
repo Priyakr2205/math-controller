@@ -2,10 +2,10 @@ package main
 
 import (
 	//      "flag"
-	"flag"
+//	"flag"
 	"fmt"
 
-	//"os"
+	"os"
 
 	"time"
 
@@ -23,14 +23,15 @@ import (
 	"math-controller/pkg/signals"
 )
 
-var (
+/*var (
 	masterURL  string
 	kubeconfig string
-)
+)*/
 
 func main() {
-
-	config, err := clientcmd.BuildConfigFromFlags(masterURL, kubeconfig)
+        
+        kubeconfig:= os.Getenv("HOME") + "/.kube/config"
+	config, err := clientcmd.BuildConfigFromFlags("" , kubeconfig)
 	if err != nil {
 		klog.Fatalf("getClusterConfig: %v", err)
 	}
@@ -72,7 +73,7 @@ func main() {
 
 }
 
-func init() {
+/*func init() {
 	flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig. Only required if out-of-cluster.")
 	flag.StringVar(&masterURL, "master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
-}
+}*/

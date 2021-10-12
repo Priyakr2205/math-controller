@@ -15,8 +15,8 @@ type Math struct {
 }
 
 type MathSpec struct {
-	Number1 int32 `json:"number1"`
-	Number2 int32 `json:"number2"`
+	Number1 *int32 `json:"number1"`
+	Number2 *int32 `json:"number2"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
