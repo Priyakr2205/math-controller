@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	mathv1alpha1 "math-controller/pkg/apis/mathematics/v1alpha1"
 	clientset "math-controller/pkg/client/clientset/versioned"
 	samplescheme "math-controller/pkg/client/clientset/versioned/scheme"
 	informers "math-controller/pkg/client/informers/externalversions/mathematics/v1alpha1"
 	listers "math-controller/pkg/client/listers/mathematics/v1alpha1"
 	"time"
-	mathv1alpha1 "math-controller/pkg/apis/mathematics/v1alpha1"
-//metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	//metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -16,7 +17,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	typedcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/klog/v2"
-  //      "context"
+
+	//      "context"
 	//	"k8s.io/client-go/kubernetes"
 	//	appslisters "k8s.io/client-go/listers/apps/v1"
 	"k8s.io/client-go/kubernetes/scheme"
@@ -220,31 +222,46 @@ func (c *Controller) syncHandler(key string) error {
 		return err
 	}
 
-	err= c.updateMath(math)
-                if err != nil {
-                return err
-        }
+	err = c.updateMath(math)
+	if err != nil {
+		return err
+	}
 
 	//number1 := math.Spec.Number1
 	//number2 := math.Spec.Number2
 
 	//fmt.Println("number1:",number1, "nu" number2)
-        c.recorder.Event(math, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
+	c.recorder.Event(math, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
 	return nil
 }
 
-func (c *Controller) updateMath(math *mathv1alpha1.Math) error{
-     mathcopy:= math.DeepCopy()
+func (c *Controller) updateMath(math *mathv1alpha1.Math) error {
+	mathcopy := math.DeepCopy()
 
-	 fmt.Println("service label ",mathcopy.ObjectMeta.Name)
+	fmt.Println("service label ", mathcopy.ObjectMeta.Name)
 
-/*          mathcopy.ObjectMeta.Labels = map[string]string{
+	/*          mathcopy.ObjectMeta.Labels = map[string]string{
 		"Update": "1",
 	 }
 
 	 _,err:= c.mathclientset.MathematicsV1alpha1().Maths("default").Update(context.TODO(),mathcopy,metav1.UpdateOptions{})
-*/
-         fmt.Println("Numbers are",*math.Spec.Number1,*math.Spec.Number2)
+	*/
+	fmt.Println("Numbers are", *math.Spec.Number1, *math.Spec.Number2)
+
+	switch math.Spec.Operation {
+	case "add", "Add", "Addition", "addition":
+		fmt.Println("Sum of ", *&math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1+*math.Spec.Number2)
+		break
+	case "sub", "Sub", "Substraction", "substraction":
+		fmt.Println("Difference of ", *&math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1-*math.Spec.Number2)
+		break
+	case "div", "Div", "Division", "division":
+		fmt.Println("Remainder of ", *&math.Spec.Number1, " divided by", *math.Spec.Number2, " is ", *math.Spec.Number1%*math.Spec.Number2)
+		break
+	case "multiply", "Multiply":
+		fmt.Println("Product of ", *&math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", *math.Spec.Number1**math.Spec.Number2)
+		break
+	}
+
 	return nil
 }
-
