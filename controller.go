@@ -102,6 +102,7 @@ func NewController(
 			oldMath := old.(*mathv1alpha1.Math)
 			if newMath.Spec.Number1 == oldMath.Spec.Number1 && newMath.Spec.Number2 == oldMath.Spec.Number2 && newMath.Spec.Operation == oldMath.Spec.Operation {
 				fmt.Println("Specs not modified. Ignoring update event")
+				return
 			}
 			controller.enqueueMath(new)
 		},
