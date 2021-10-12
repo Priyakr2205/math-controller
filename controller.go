@@ -8,6 +8,7 @@ import (
 	samplescheme "math-controller/pkg/client/clientset/versioned/scheme"
 	informers "math-controller/pkg/client/informers/externalversions/mathematics/v1alpha1"
 	listers "math-controller/pkg/client/listers/mathematics/v1alpha1"
+	"strconv"
 	"time"
 
 	//metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -225,23 +226,36 @@ func (c *Controller) syncHandler(key string) error {
 	}
 
 	fmt.Println("Numbers are", *math.Spec.Number1, *math.Spec.Number2)
-
+	var result int32
+	var oper string
 	switch math.Spec.Operation {
 	case "add", "Add", "Addition", "addition":
-		fmt.Println("Sum of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1+*math.Spec.Number2)
+		result = *math.Spec.Number1 + *math.Spec.Number2
+		oper = "Sum"
+		fmt.Println("Sum of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
+
 		break
 	case "sub", "Sub", "Substraction", "substraction":
-		fmt.Println("Difference of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", *math.Spec.Number1-*math.Spec.Number2)
+		result = *math.Spec.Number1 - *math.Spec.Number2
+		oper = "Difference "
+		fmt.Println("Difference of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
+
 		break
 	case "div", "Div", "Division", "division":
-		fmt.Println("Remainder of ", *math.Spec.Number1, " divided by", *math.Spec.Number2, " is ", *math.Spec.Number1%*math.Spec.Number2)
+		result = *math.Spec.Number1 % *math.Spec.Number2
+		oper = "Remainder"
+		fmt.Println("Remainder of ", *math.Spec.Number1, " divided by", *math.Spec.Number2, " is ", result)
+
 		break
 	case "multiply", "Multiply":
-		fmt.Println("Product of ", *math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", *math.Spec.Number1**math.Spec.Number2)
+		result = *math.Spec.Number1 * *math.Spec.Number2
+		oper = "Product"
+		fmt.Println("Product of ", *math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", result)
+
 		break
 	}
 
-	err = c.updateMath(math)
+	err = c.updateMath(math, result, oper)
 	if err != nil {
 		return err
 	}
@@ -254,13 +268,15 @@ func (c *Controller) syncHandler(key string) error {
 	return nil
 }
 
-func (c *Controller) updateMath(math *mathv1alpha1.Math) error {
+func (c *Controller) updateMath(math *mathv1alpha1.Math, result int32, oper string) error {
 	mathcopy := math.DeepCopy()
 
 	fmt.Println("service label ", mathcopy.ObjectMeta.Name)
 
+	res := strconv.Itoa(int(result))
+
 	mathcopy.ObjectMeta.Labels = map[string]string{
-		"Update": "1",
+		oper: res,
 	}
 
 	_, err := c.mathclientset.MathematicsV1alpha1().Maths("default").Update(context.TODO(), mathcopy, metav1.UpdateOptions{})
