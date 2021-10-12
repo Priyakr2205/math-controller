@@ -16,9 +16,9 @@ spec:
             spec:
               type: object
               properties:
-                Number1:
+                number1:
                   type: integer
-                Number2:
+                number2:
                   type: integer
   names:
     kind: Math

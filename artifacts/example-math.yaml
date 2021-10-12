@@ -3,7 +3,7 @@ kind: Math
 metadata:
   name: example-math
 spec: 
-  Number1: 21
-  Number2: 10
+  number1: 21
+  number2: 10
 
 
