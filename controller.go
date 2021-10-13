@@ -8,6 +8,7 @@ import (
 	samplescheme "math-controller/pkg/client/clientset/versioned/scheme"
 	informers "math-controller/pkg/client/informers/externalversions/mathematics/v1alpha1"
 	listers "math-controller/pkg/client/listers/mathematics/v1alpha1"
+	"reflect"
 	"strconv"
 	"time"
 
@@ -100,10 +101,14 @@ func NewController(
 		UpdateFunc: func(old, new interface{}) {
 			newMath := new.(*mathv1alpha1.Math)
 			oldMath := old.(*mathv1alpha1.Math)
-			if newMath.Spec.Number1 == oldMath.Spec.Number1 && newMath.Spec.Number2 == oldMath.Spec.Number2 && newMath.Spec.Operation == oldMath.Spec.Operation {
+			if reflect.DeepEqual(newMath.Spec, oldMath.Spec) {
 				fmt.Println("Specs not modified. Ignoring update event")
 				return
 			}
+			/*if newMath.Spec.Number1 == oldMath.Spec.Number1 && newMath.Spec.Number2 == oldMath.Spec.Number2 && newMath.Spec.Operation == oldMath.Spec.Operation {
+				fmt.Println("Specs not modified. Ignoring update event")
+				return
+			}*/
 			controller.enqueueMath(new)
 		},
 	})
@@ -259,6 +264,8 @@ func (c *Controller) syncHandler(key string) error {
 		fmt.Println("Product of ", *math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", result)
 
 		break
+	default:
+		return fmt.Errorf("Invalid operation. Skipping processing for %s", math.Name)
 	}
 
 	err = c.updateMath(math, result, oper)
