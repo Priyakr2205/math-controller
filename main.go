@@ -2,7 +2,7 @@ package main
 
 import (
 	//      "flag"
-//	"flag"
+	"flag"
 	"fmt"
 
 	"os"
@@ -29,6 +29,13 @@ import (
 )*/
 
 func main() {
+
+         klog.InitFlags(nil)
+	// By default klog writes to stderr. Setting logtostderr to false makes klog
+	// write to a log file.
+	flag.Set("logtostderr", "false")
+	flag.Set("log_file", "controller.log")
+	flag.Parse()
         
         kubeconfig:= os.Getenv("HOME") + "/.kube/config"
 	config, err := clientcmd.BuildConfigFromFlags("" , kubeconfig)
@@ -70,7 +77,8 @@ func main() {
 	if err != nil {
 		fmt.Println("Controller exited")
 	}
-
+        
+        klog.Flush()
 }
 
 /*func init() {

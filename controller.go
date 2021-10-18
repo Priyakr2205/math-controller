@@ -214,7 +214,13 @@ func (c *Controller) processNextWorkItem() bool {
 	return true
 }
 
-func (c *Controller) syncHandler(key string) error {
+func (c *Controller) syncHandler(key string) error{
+
+         defer func() {
+		if r:= recover(); r != nil {
+	    		fmt.Println("recovered in syncHandler(). Error : ",r)
+		}
+	}()
 
 	// Convert the namespace/name string into a distinct namespace and name
 	namespace, name, err := cache.SplitMetaNamespaceKey(key)

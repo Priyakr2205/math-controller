@@ -1,0 +1,14 @@
+Log file created at: 2021/10/18 10:53:56
+Running on machine: k8s-master01
+Binary: Built with gc go1.16.7 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1018 10:53:56.099305   28846 main.go:51] Successfully constructed k8s client
+I1018 10:53:56.102562   28846 controller.go:97] Setting up event handlers
+I1018 10:53:56.102763   28846 controller.go:134] Starting Math controller
+I1018 10:53:56.102771   28846 controller.go:137] Waiting for informer caches to sync
+I1018 10:53:56.203549   28846 controller.go:142] Starting workers
+I1018 10:53:56.203573   28846 controller.go:148] Started workers
+I1018 10:53:56.203860   28846 controller.go:205] Successfully synced 'default/example-math'
+I1018 10:53:56.210392   28846 controller.go:205] Successfully synced 'default/example-math2'
+I1018 10:53:56.210583   28846 event.go:291] "Event occurred" object="default/example-math2" kind="Math" apiVersion="mathematics.com/v1alpha1" type="Normal" reason="Synced" message="Math  synced successfully"
+I1018 10:54:07.122065   28846 controller.go:150] Shutting down workers
