@@ -16,8 +16,10 @@ spec:
     spec:
       containers:
       - name: math-app
-        image: nextgen98/priyak:math1
+        image: nextgen98/priyak:math2
         ports:
         - containerPort: 80
+        imagePullPolicy: Always
       imagePullSecrets:
       - name: regcredpk
+

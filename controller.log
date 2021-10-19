@@ -15,3 +15,22 @@ I1019 06:18:27.469442    5622 controller.go:205] Successfully synced 'default/ex
 I1019 06:18:27.490244    5622 controller.go:205] Successfully synced 'default/example-math2'
 I1019 06:18:27.490421    5622 event.go:291] "Event occurred" object="default/example-math2" kind="Math" apiVersion="mathematics.com/v1alpha1" type="Normal" reason="Synced" message="Math  synced successfully"
 I1019 06:18:34.164299    5622 controller.go:150] Shutting down workers
+Log file created at: 2021/10/19 08:32:08
+Running on machine: k8s-master01
+Binary: Built with gc go1.16.7 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1019 08:32:08.229998    7021 main.go:42] Application start time : 2021-10-19 08:32:08.229875463 -0400 EDT m=+0.016110792
+I1019 08:32:08.237862    7021 controller.go:136] Starting Math controller
+I1019 08:32:08.237920    7021 controller.go:139] Waiting for informer caches to sync
+I1019 08:32:08.338259    7021 controller.go:144] Starting workers
+I1019 08:32:08.338290    7021 controller.go:150] Started workers
+I1019 08:32:08.338349    7021 controller.go:247] Numbers are21 10
+I1019 08:32:08.338363    7021 controller.go:272] Product of 21 multiplied by 10 is 210
+I1019 08:32:08.338436    7021 controller.go:247] Numbers are52 16
+I1019 08:32:08.338451    7021 controller.go:260] Difference of 52 and 16 is 36
+I1019 08:32:08.346845    7021 controller.go:207] Successfully synced 'default/example-math'
+I1019 08:32:08.348579    7021 event.go:291] "Event occurred" object="default/example-math" kind="Math" apiVersion="mathematics.com/v1alpha1" type="Normal" reason="Synced" message="Math  synced successfully"
+I1019 08:32:08.348617    7021 controller.go:207] Successfully synced 'default/example-math2'
+I1019 08:32:08.348663    7021 event.go:291] "Event occurred" object="default/example-math2" kind="Math" apiVersion="mathematics.com/v1alpha1" type="Normal" reason="Synced" message="Math  synced successfully"
+I1019 08:33:01.099444    7021 controller.go:112] Math Resource example-math2@default deleted
+I1019 08:40:50.519078    7021 controller.go:152] Shutting down workers
