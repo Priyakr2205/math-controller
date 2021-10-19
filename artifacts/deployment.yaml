@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math-deployment
+  labels:
+    app: math-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: math-app
+  template:
+    metadata:
+      labels:
+        app: math-app
+    spec:
+      containers:
+      - name: math-app
+        image: nextgen98/priyak:math1
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: regcredpk

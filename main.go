@@ -4,14 +4,14 @@ import (
 	//      "flag"
 	"flag"
 	"fmt"
-
-	"os"
+        "k8s.io/client-go/rest"
+//	"os"
 
 	"time"
 
 	//kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
+//	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 
 	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
@@ -37,11 +37,14 @@ func main() {
 	flag.Set("log_file", "controller.log")
 	flag.Parse()
         
-        kubeconfig:= os.Getenv("HOME") + "/.kube/config"
-	config, err := clientcmd.BuildConfigFromFlags("" , kubeconfig)
-	if err != nil {
+//        kubeconfig:= os.Getenv("HOME") + "/.kube/config"
+//	config, err := clientcmd.BuildConfigFromFlags("" , kubeconfig)
+//	if err != nil {
+               config, err := rest.InClusterConfig()
+             if err != nil {
 		klog.Fatalf("getClusterConfig: %v", err)
-	}
+             }
+//	}
 
 	kubeClient, err := kubernetes.NewForConfig(config)
 	if err != nil {
