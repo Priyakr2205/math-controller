@@ -3,8 +3,8 @@ kind: Math
 metadata:
   name: example-math2
 spec: 
-  Number1: 2
-  Number2: 1
+  number1: 52
+  number2: 16
   operation: sub
 
 

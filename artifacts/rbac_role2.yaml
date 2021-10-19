@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: operator-math-role
+rules:
+- apiGroups:
+  - mathematics.com
+  resources:
+  - maths
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "update"] 

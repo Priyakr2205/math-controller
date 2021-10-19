@@ -1,36 +1,17 @@
-Log file created at: 2021/10/18 10:53:56
+Log file created at: 2021/10/19 06:18:27
 Running on machine: k8s-master01
 Binary: Built with gc go1.16.7 for linux/amd64
 Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-I1018 10:53:56.099305   28846 main.go:51] Successfully constructed k8s client
-I1018 10:53:56.102562   28846 controller.go:97] Setting up event handlers
-I1018 10:53:56.102763   28846 controller.go:134] Starting Math controller
-I1018 10:53:56.102771   28846 controller.go:137] Waiting for informer caches to sync
-I1018 10:53:56.203549   28846 controller.go:142] Starting workers
-I1018 10:53:56.203573   28846 controller.go:148] Started workers
-I1018 10:53:56.203860   28846 controller.go:205] Successfully synced 'default/example-math'
-I1018 10:53:56.210392   28846 controller.go:205] Successfully synced 'default/example-math2'
-I1018 10:53:56.210583   28846 event.go:291] "Event occurred" object="default/example-math2" kind="Math" apiVersion="mathematics.com/v1alpha1" type="Normal" reason="Synced" message="Math  synced successfully"
-I1018 10:54:07.122065   28846 controller.go:150] Shutting down workers
-Log file created at: 2021/10/19 03:15:47
-Running on machine: k8s-master01
-Binary: Built with gc go1.16.7 for linux/amd64
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-F1019 03:15:47.028578   30360 main.go:45] getClusterConfig: unable to load in-cluster configuration, KUBERNETES_SERVICE_HOST and KUBERNETES_SERVICE_PORT must be defined
-goroutine 1 [running]:
-k8s.io/klog/v2.stacks(0xc0003a8801, 0xc00000b700, 0xa9, 0xfe)
-	/root/go/pkg/mod/k8s.io/klog/v2@v2.9.0/klog.go:1026 +0xb9
-k8s.io/klog/v2.(*loggingT).output(0x2292bc0, 0xc000000003, 0x0, 0x0, 0xc0003cc070, 0x0, 0x1c1f143, 0x7, 0x2d, 0x0)
-	/root/go/pkg/mod/k8s.io/klog/v2@v2.9.0/klog.go:975 +0x1e5
-k8s.io/klog/v2.(*loggingT).printf(0x2292bc0, 0xc000000003, 0x0, 0x0, 0x0, 0x0, 0x17691db, 0x14, 0xc0003c9430, 0x1, ...)
-	/root/go/pkg/mod/k8s.io/klog/v2@v2.9.0/klog.go:753 +0x19a
-k8s.io/klog/v2.Fatalf(...)
-	/root/go/pkg/mod/k8s.io/klog/v2@v2.9.0/klog.go:1514
-main.main()
-	/root/k8s.io/math-controller/main.go:45 +0x1f6
-
-goroutine 6 [chan receive]:
-k8s.io/klog/v2.(*loggingT).flushDaemon(0x2292bc0)
-	/root/go/pkg/mod/k8s.io/klog/v2@v2.9.0/klog.go:1169 +0x8b
-created by k8s.io/klog/v2.init.0
-	/root/go/pkg/mod/k8s.io/klog/v2@v2.9.0/klog.go:420 +0xdf
+I1019 06:18:27.361024    5622 main.go:42] Application start time : 2021-10-19 06:18:27.360921313 -0400 EDT m=+0.016070386
+I1019 06:18:27.368239    5622 controller.go:134] Starting Math controller
+I1019 06:18:27.368274    5622 controller.go:137] Waiting for informer caches to sync
+I1019 06:18:27.469192    5622 controller.go:142] Starting workers
+I1019 06:18:27.469209    5622 controller.go:148] Started workers
+I1019 06:18:27.469267    5622 controller.go:245] Numbers are21 0
+I1019 06:18:27.469289    5622 controller.go:245] Numbers are25 14
+I1019 06:18:27.469301    5622 controller.go:258] Difference of 25 and 14 is 11
+E1019 06:18:27.469288    5622 controller.go:221] recovered in syncHandler(). Error :  runtime error: integer divide by zero
+I1019 06:18:27.469442    5622 controller.go:205] Successfully synced 'default/example-math'
+I1019 06:18:27.490244    5622 controller.go:205] Successfully synced 'default/example-math2'
+I1019 06:18:27.490421    5622 event.go:291] "Event occurred" object="default/example-math2" kind="Math" apiVersion="mathematics.com/v1alpha1" type="Normal" reason="Synced" message="Math  synced successfully"
+I1019 06:18:34.164299    5622 controller.go:150] Shutting down workers
