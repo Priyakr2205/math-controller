@@ -105,11 +105,13 @@ func NewController(
 				klog.V(4).Info("Specs not modified. Ignoring update event")
 				return
 			}
-			/*if newMath.Spec.Number1 == oldMath.Spec.Number1 && newMath.Spec.Number2 == oldMath.Spec.Number2 && newMath.Spec.Operation == oldMath.Spec.Operation {
-				fmt.Println("Specs not modified. Ignoring update event")
-				return
-			}*/
 			controller.enqueueMath(new)
+		},
+		DeleteFunc: func(obj interface{}) {
+			if resource, ok := obj.(*mathv1alpha1.Math); ok {
+				klog.Infof("Math Resource %s@%s deleted", resource.Name, resource.Namespace)
+
+			}
 		},
 	})
 
