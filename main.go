@@ -3,7 +3,6 @@ package main
 import (
 	//      "flag"
 	"flag"
-	"fmt"
 	"os"
 
 	"k8s.io/client-go/rest"
@@ -38,6 +37,10 @@ func main() {
 	flag.Set("log_file", "controller.log")
 	flag.Parse()
 
+	currentTime := time.Now()
+
+	klog.Info("Application start time : ", currentTime.String())
+
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		kubeconfig := os.Getenv("HOME") + "/.kube/config"
@@ -59,7 +62,7 @@ func main() {
 	if err != nil {
 		klog.Fatalf("Error building example clientset: %s", err.Error())
 	}
-	fmt.Println(exampleClient)
+	//fmt.Println(exampleClient)
 	//creating sharedinformers for custom resource
 	//exampleInformerFactory := informers.NewSharedInformerFactory(exampleClient, time.Second*30)
 
@@ -79,7 +82,7 @@ func main() {
 	exampleInformerFactory.Start(stopCh)
 	err = controller.Run(3, stopCh)
 	if err != nil {
-		klog.V(4).Info("Controller exited")
+		klog.Info("Controller exited")
 	}
 
 	klog.Flush()

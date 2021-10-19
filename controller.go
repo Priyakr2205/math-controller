@@ -242,7 +242,7 @@ func (c *Controller) syncHandler(key string) error {
 		return err
 	}
 
-	fmt.Println("Numbers are", *math.Spec.Number1, *math.Spec.Number2)
+	klog.Info("Numbers are", *math.Spec.Number1, *math.Spec.Number2)
 	var result int32
 	var oper string
 	switch math.Spec.Operation {
