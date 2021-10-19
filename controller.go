@@ -269,7 +269,7 @@ func (c *Controller) syncHandler(key string) error {
 	case "multiply", "Multiply":
 		result = *math.Spec.Number1 * *math.Spec.Number2
 		oper = "Product"
-		klog.Info("Product of ", *math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", result)
+		klog.Info("Product of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
 
 		break
 	default:
