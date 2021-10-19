@@ -94,7 +94,7 @@ func NewController(
 		recorder:   recorder,
 	}
 
-	klog.Info("Setting up event handlers")
+	klog.V(4).Info("Setting up event handlers")
 	// Set up an event handler for when Foo resources change
 	mathInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
 		AddFunc: controller.enqueueMath,
@@ -102,7 +102,7 @@ func NewController(
 			newMath := new.(*mathv1alpha1.Math)
 			oldMath := old.(*mathv1alpha1.Math)
 			if reflect.DeepEqual(newMath.Spec, oldMath.Spec) {
-				fmt.Println("Specs not modified. Ignoring update event")
+				klog.V(4).Info("Specs not modified. Ignoring update event")
 				return
 			}
 			/*if newMath.Spec.Number1 == oldMath.Spec.Number1 && newMath.Spec.Number2 == oldMath.Spec.Number2 && newMath.Spec.Operation == oldMath.Spec.Operation {
@@ -214,11 +214,11 @@ func (c *Controller) processNextWorkItem() bool {
 	return true
 }
 
-func (c *Controller) syncHandler(key string) error{
+func (c *Controller) syncHandler(key string) error {
 
-         defer func() {
-		if r:= recover(); r != nil {
-	    		fmt.Println("recovered in syncHandler(). Error : ",r)
+	defer func() {
+		if r := recover(); r != nil {
+			klog.Errorln("recovered in syncHandler(). Error : ", r)
 		}
 	}()
 
@@ -249,25 +249,25 @@ func (c *Controller) syncHandler(key string) error{
 	case "add", "Add", "Addition", "addition":
 		result = *math.Spec.Number1 + *math.Spec.Number2
 		oper = "Sum"
-		fmt.Println("Sum of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
+		klog.Info("Sum of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
 
 		break
 	case "sub", "Sub", "Substraction", "substraction":
 		result = *math.Spec.Number1 - *math.Spec.Number2
 		oper = "Difference"
-		fmt.Println("Difference of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
+		klog.Info("Difference of ", *math.Spec.Number1, " and ", *math.Spec.Number2, " is ", result)
 
 		break
 	case "div", "Div", "Division", "division":
 		result = *math.Spec.Number1 % *math.Spec.Number2
 		oper = "Remainder"
-		fmt.Println("Remainder of ", *math.Spec.Number1, " divided by", *math.Spec.Number2, " is ", result)
+		klog.Info("Remainder of ", *math.Spec.Number1, " divided by", *math.Spec.Number2, " is ", result)
 
 		break
 	case "multiply", "Multiply":
 		result = *math.Spec.Number1 * *math.Spec.Number2
 		oper = "Product"
-		fmt.Println("Product of ", *math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", result)
+		klog.Info("Product of ", *math.Spec.Number1, " multiplied by ", *math.Spec.Number2, " is ", result)
 
 		break
 	default:
@@ -290,7 +290,7 @@ func (c *Controller) syncHandler(key string) error{
 func (c *Controller) updateMath(math *mathv1alpha1.Math, result int32, oper string) error {
 	mathcopy := math.DeepCopy()
 
-	fmt.Println("service label ", mathcopy.ObjectMeta.Name)
+	klog.V(4).Info("service label ", mathcopy.ObjectMeta.Name)
 
 	res := strconv.Itoa(int(result))
 

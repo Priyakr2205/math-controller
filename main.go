@@ -4,14 +4,15 @@ import (
 	//      "flag"
 	"flag"
 	"fmt"
-        "k8s.io/client-go/rest"
-//	"os"
+	"os"
+
+	"k8s.io/client-go/rest"
 
 	"time"
 
 	//kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
-//	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 
 	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
@@ -30,28 +31,28 @@ import (
 
 func main() {
 
-         klog.InitFlags(nil)
+	klog.InitFlags(nil)
 	// By default klog writes to stderr. Setting logtostderr to false makes klog
 	// write to a log file.
 	flag.Set("logtostderr", "false")
 	flag.Set("log_file", "controller.log")
 	flag.Parse()
-        
-//        kubeconfig:= os.Getenv("HOME") + "/.kube/config"
-//	config, err := clientcmd.BuildConfigFromFlags("" , kubeconfig)
-//	if err != nil {
-               config, err := rest.InClusterConfig()
-             if err != nil {
-		klog.Fatalf("getClusterConfig: %v", err)
-             }
-//	}
+
+	config, err := rest.InClusterConfig()
+	if err != nil {
+		kubeconfig := os.Getenv("HOME") + "/.kube/config"
+		config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)
+		if err != nil {
+			klog.Fatalf("getClusterConfig: %v", err)
+		}
+	}
 
 	kubeClient, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		klog.Fatalf("getClusterConfig: %v", err)
 	}
 
-	klog.Info("Successfully constructed k8s client")
+	klog.V(4).Info("Successfully constructed k8s client")
 
 	// generating custom resource client.
 	exampleClient, err := clientset.NewForConfig(config)
@@ -78,13 +79,8 @@ func main() {
 	exampleInformerFactory.Start(stopCh)
 	err = controller.Run(3, stopCh)
 	if err != nil {
-		fmt.Println("Controller exited")
+		klog.V(4).Info("Controller exited")
 	}
-        
-        klog.Flush()
-}
 
-/*func init() {
-	flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig. Only required if out-of-cluster.")
-	flag.StringVar(&masterURL, "master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
-}*/
+	klog.Flush()
+}
