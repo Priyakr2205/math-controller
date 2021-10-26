@@ -293,6 +293,7 @@ func (c *Controller) updateMath(math *mathv1alpha1.Math, result int32, oper stri
 	mathcopy := math.DeepCopy()
 	mathcopy.Status.Status = "SUCCESS"
 	mathcopy.Status.Message = oper + "=" + strconv.Itoa(int(result))
+	mathcopy.Status.LastUpdateTime = metav1.Time{Time: time.Now()}
 
 	klog.V(4).Info("service label ", mathcopy.ObjectMeta.Name)
 

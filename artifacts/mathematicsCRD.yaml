@@ -25,6 +25,8 @@ spec:
             status:
               type: object
               properties:
+                lastUpdateTime:
+                  type: dateTime
                 status:
                   type: string
                 message:

@@ -22,8 +22,9 @@ type MathSpec struct {
 }
 
 type MathStatus struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
+	LastUpdateTime metav1.Time `json:"lastUpdateTime"`
+	Status         string      `json:"status"`
+	Message        string      `json:"message"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
