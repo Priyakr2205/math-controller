@@ -241,7 +241,7 @@ func (c *Controller) syncHandler(key string) error {
 	defer func() {
 		if r := recover(); r != nil {
 			klog.Errorln("recovered in syncHandler(). Error : ", r)
-			err = c.updateMath(math, "FAILURE", 0, "Operation failed due to "+r.(error).Error()+"error")
+			err = c.updateMath(math, "FAILURE", 0, "Operation failed due to "+r.(error).Error())
 			if err != nil {
 				klog.Errorln(err)
 			}
@@ -297,7 +297,7 @@ func (c *Controller) syncHandler(key string) error {
 
 func (c *Controller) updateMath(math *mathv1alpha1.Math, status string, result int32, oper string) error {
 	mathcopy := math.DeepCopy()
-	mathcopy.Status.Status = "SUCCESS"
+	mathcopy.Status.Status = status
 	if status == "SUCCESS" {
 		mathcopy.Status.Message = oper + "=" + strconv.Itoa(int(result))
 	} else {
