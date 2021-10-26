@@ -241,7 +241,7 @@ func (c *Controller) syncHandler(key string) error {
 	defer func() {
 		if r := recover(); r != nil {
 			klog.Errorln("recovered in syncHandler(). Error : ", r)
-			err = c.updateMath(math, "FAILURE", 0, r.(error).Error())
+			err = c.updateMath(math, "FAILURE", 0, "Operation failed due to "+r.(error).Error()+"error")
 			if err != nil {
 				klog.Errorln(err)
 			}
