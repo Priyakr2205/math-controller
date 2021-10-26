@@ -11,13 +11,19 @@ type Math struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec MathSpec `json:"spec"`
+	Spec   MathSpec   `json:"spec"`
+	Status MathStatus `json:"status"`
 }
 
 type MathSpec struct {
-	Number1 *int32 `json:"number1"`
-	Number2 *int32 `json:"number2"`
-        Operation string `json:"operation"`
+	Number1   *int32 `json:"number1"`
+	Number2   *int32 `json:"number2"`
+	Operation string `json:"operation"`
+}
+
+type MathStatus struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

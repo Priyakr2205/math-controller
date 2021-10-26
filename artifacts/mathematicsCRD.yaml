@@ -22,6 +22,16 @@ spec:
                   type: integer
                 operation:
                   type: string
+            status:
+              type: object
+              properties:
+                status:
+                  type: string
+                message:
+                  type: string
+      subresources:
+        # enables the status subresource
+        status: {}
   names:
     kind: Math
     plural: maths

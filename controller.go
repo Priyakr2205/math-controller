@@ -291,6 +291,8 @@ func (c *Controller) syncHandler(key string) error {
 
 func (c *Controller) updateMath(math *mathv1alpha1.Math, result int32, oper string) error {
 	mathcopy := math.DeepCopy()
+	mathcopy.Status.Status = "SUCCESS"
+	mathcopy.Status.Message = oper + "=" + strconv.Itoa(int(result))
 
 	klog.V(4).Info("service label ", mathcopy.ObjectMeta.Name)
 
