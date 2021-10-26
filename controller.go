@@ -307,13 +307,13 @@ func (c *Controller) updateMath(math *mathv1alpha1.Math, status string, result i
 	//t:=time.Now()
 	mathcopy.Status.LastUpdateTime = time.Now().Format("2006-01-02 15:04:05.000000")
 
-	klog.V(4).Info("service label ", mathcopy.ObjectMeta.Name)
+	//klog.V(4).Info("service label ", mathcopy.ObjectMeta.Name)
 
-	res := strconv.Itoa(int(result))
+	//res := strconv.Itoa(int(result))
 
-	mathcopy.ObjectMeta.Labels = map[string]string{
-		oper: res,
-	}
+	//mathcopy.ObjectMeta.Labels = map[string]string{
+	//	oper: res,
+	//}
 
 	_, err := c.mathclientset.MathematicsV1alpha1().Maths("default").UpdateStatus(context.TODO(), mathcopy, metav1.UpdateOptions{})
 
