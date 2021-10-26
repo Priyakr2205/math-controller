@@ -218,12 +218,6 @@ func (c *Controller) processNextWorkItem() bool {
 
 func (c *Controller) syncHandler(key string) error {
 
-	defer func() {
-		if r := recover(); r != nil {
-			klog.Errorln("recovered in syncHandler(). Error : ", r)
-		}
-	}()
-
 	// Convert the namespace/name string into a distinct namespace and name
 	namespace, name, err := cache.SplitMetaNamespaceKey(key)
 	if err != nil {
@@ -243,6 +237,18 @@ func (c *Controller) syncHandler(key string) error {
 
 		return err
 	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			klog.Errorln("recovered in syncHandler(). Error : ", r)
+			err = c.updateMath(math, "FAILURE", 0, r.(error).Error())
+			if err != nil {
+				klog.Errorln(err)
+			}
+
+			c.recorder.Event(math, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
+		}
+	}()
 
 	klog.Info("Numbers are", *math.Spec.Number1, *math.Spec.Number2)
 	var result int32
@@ -276,7 +282,7 @@ func (c *Controller) syncHandler(key string) error {
 		return fmt.Errorf("Invalid operation. Skipping processing for %s", math.Name)
 	}
 
-	err = c.updateMath(math, result, oper)
+	err = c.updateMath(math, "SUCCESS", result, oper)
 	if err != nil {
 		return err
 	}
@@ -289,10 +295,15 @@ func (c *Controller) syncHandler(key string) error {
 	return nil
 }
 
-func (c *Controller) updateMath(math *mathv1alpha1.Math, result int32, oper string) error {
+func (c *Controller) updateMath(math *mathv1alpha1.Math, status string, result int32, oper string) error {
 	mathcopy := math.DeepCopy()
 	mathcopy.Status.Status = "SUCCESS"
-	mathcopy.Status.Message = oper + "=" + strconv.Itoa(int(result))
+	if status == "SUCCESS" {
+		mathcopy.Status.Message = oper + "=" + strconv.Itoa(int(result))
+	} else {
+		mathcopy.Status.Message = oper
+	}
+
 	//t:=time.Now()
 	mathcopy.Status.LastUpdateTime = time.Now().Format("2006-01-02 15:04:05.000000")
 
