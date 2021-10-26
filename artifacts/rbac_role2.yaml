@@ -17,4 +17,4 @@ rules:
   - delete
 - apiGroups: [""]
   resources: ["events"]
-  verbs: ["create", "update"] 
+  verbs: ["create", "update", "patch", "delete", "watch", "list", "get"] 

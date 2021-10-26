@@ -302,7 +302,7 @@ func (c *Controller) updateMath(math *mathv1alpha1.Math, result int32, oper stri
 		oper: res,
 	}
 
-	_, err := c.mathclientset.MathematicsV1alpha1().Maths("default").Update(context.TODO(), mathcopy, metav1.UpdateOptions{})
+	_, err := c.mathclientset.MathematicsV1alpha1().Maths("default").UpdateStatus(context.TODO(), mathcopy, metav1.UpdateOptions{})
 
 	return err
 }

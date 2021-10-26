@@ -40,6 +40,7 @@ type MathsGetter interface {
 type MathInterface interface {
 	Create(ctx context.Context, math *v1alpha1.Math, opts v1.CreateOptions) (*v1alpha1.Math, error)
 	Update(ctx context.Context, math *v1alpha1.Math, opts v1.UpdateOptions) (*v1alpha1.Math, error)
+	UpdateStatus(ctx context.Context, math *v1alpha1.Math, opts v1.UpdateOptions) (*v1alpha1.Math, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
 	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.Math, error)
@@ -128,6 +129,22 @@ func (c *maths) Update(ctx context.Context, math *v1alpha1.Math, opts v1.UpdateO
 		Namespace(c.ns).
 		Resource("maths").
 		Name(math.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(math).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+func (c *maths) UpdateStatus(ctx context.Context, math *v1alpha1.Math, opts v1.UpdateOptions) (result *v1alpha1.Math, err error) {
+	result = &v1alpha1.Math{}
+	err = c.client.Put().
+		Namespace(c.ns).
+		Resource("maths").
+		Name(math.Name).
+		SubResource("status").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(math).
 		Do(ctx).
